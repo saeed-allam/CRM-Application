@@ -1,0 +1,46 @@
+<div id="kt_header" class="header">
+  <div class="container-fluid d-flex align-items-center flex-wrap justify-content-between" id="kt_header_container">
+    <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+      data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}"
+      class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-2 pb-5 pb-lg-0 pt-7 pt-lg-0">
+      <ng-container *ngIf="fixed.subheader?.display">
+        <h1 class="d-flex flex-column text-dark fw-bolder my-0 fs-1">
+          {{fixed.subheader.data[fixed.subheader.data?.length-1].name}}
+        </h1>
+        <ul class="breadcrumb breadcrumb-dot fw-bold fs-base my-1">
+          <li class="breadcrumb-item text-muted">
+            <a routerLink="/dashboard" class="text-muted">
+              {{'Menu.Dashboard'|translate}}
+            </a>
+          </li>
+          <ng-container *ngFor="let item of fixed.subheader.data">
+            <li class="breadcrumb-item text-muted">
+              <ng-container *ngIf="item.url != null; else elseTemplate">
+                <a [routerLink]="[item.url]" class="text-gray-600 text-hover-primary">{{item.name}}</a>
+              </ng-container>
+              <ng-template #elseTemplate>
+                {{item.name}}
+              </ng-template>
+            </li>
+          </ng-container>
+        </ul>
+      </ng-container>
+    </div>
+    <div class="d-flex d-lg-none align-items-center ms-n3 me-2">
+      <div class="btn btn-icon btn-active-icon-primary" id="kt_aside_toggle">
+        <span class="svg-icon svg-icon-1 mt-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z"
+              fill="black"></path>
+            <path opacity="0.3"
+              d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z"
+              fill="black"></path>
+          </svg>
+        </span>
+      </div>
+      <a routerLink="/dashboard" class="d-flex align-items-center">
+        <img alt="Logo" src="../../../../assets/image/logo.png" class="h-40px">
+      </a>
+    </div>
+  </div>
+</div>

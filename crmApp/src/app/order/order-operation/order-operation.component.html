@@ -1,0 +1,50 @@
+<form [formGroup]="orderForm">
+    <div class="card card-flush py-4">
+        <div class="card-header">
+            <div class="card-title">
+                <h2>Order</h2>
+            </div>
+        </div>
+        <div class="card-body pt-0">
+            <div class="row">
+                <div class="col-md-4 mb-5">
+                    <label class="fs-5 fw-bold mb-2">Customer</label>
+                    <app-customer-shared [selectedValue]="f.customerId.value"
+                        (selectedValueChanges)="f.customerId.setValue($event)"
+                        [showError]="submitted && f.customerId.value == null">
+                    </app-customer-shared>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <label class="required form-label">Status</label>
+                    <input type="text" name="status" class="form-control mb-2" placeholder="Status"
+                        formControlName="status" [ngClass]="{ 'is-invalid': submitted && f.status.errors }" />
+                    <ng-container *ngIf="submitted && f.status.errors">
+                        <div class="invalid-feedback" *ngIf="f.status.errors.required">
+                            Status Is Required
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="col-md-4 mb-5 ">
+                    <label class="required form-label">Date</label>
+                    <input type="text" class="form-control " bsDatepicker
+                        [bsConfig]="fixed.datePickerConfig" formControlName="date" autocomplete="off" />
+                </div>
+            </div>   <hr>
+            <div class="row">
+              <app-order-items (orderItemChanges)="
+              f.orderItem.setValue($event.orderItem);
+              f.orderItem_Delete.setValue($event.orderItem_Delete)
+              " [orderItem]="f.orderItem.value">
+              </app-order-items>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end my-10">
+        <a [routerLink]="[orderSer.listPage]" class="btn btn-light me-5">Cancel</a>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+            <span class="indicator-label">Save Changes</span>
+        </button>
+    </div>
+
+</form>

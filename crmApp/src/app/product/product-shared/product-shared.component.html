@@ -1,0 +1,16 @@
+<div class="form-select form-select-solid">
+    <div>
+      <ng-select [items]="productSer.list" bindLabel="name" bindValue="{{ productSer.id }}"
+        name="productId" (change)="onSelect()" (clear)="onSelect()"
+        placeholder="Search " [formControl]="productId"
+        [ngClass]="{ 'is-invalid': showError}" notFoundText="Not Found Text" [multiple]="false"
+        [closeOnSelect]="true">
+      </ng-select>
+    <ng-container *ngIf="showError">
+      <div class="invalid-feedback">
+    Product Is Required
+      </div>
+    </ng-container>
+  </div>
+  
+  

@@ -1,0 +1,69 @@
+<form  [formGroup]="customerForm">
+<div class="card card-flush py-4">
+    <div class="card-header">
+        <div class="card-title">
+            <h2>Customer</h2>
+        </div>
+    </div>
+    <div class="card-body pt-0">
+        <div class="row">
+            <div class="col-md-4 mb-5">
+                <label class="required form-label">Code</label>
+                <input type="text" name="code" class="form-control mb-2" placeholder="Code"formControlName="code"
+                [ngClass]="{ 'is-invalid': submitted && f.code.errors }" />
+              <ng-container *ngIf="submitted && f.code.errors">
+                <div class="invalid-feedback" *ngIf="f.code.errors.required">
+                    Code Is Required
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-md-4 mb-5">
+                <label class="required form-label">First Name</label>
+                <input type="text" name="firstName" class="form-control mb-2" placeholder="First Name" formControlName="firstName"
+                [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+              <ng-container *ngIf="submitted && f.firstName.errors">
+                <div class="invalid-feedback" *ngIf="f.firstName.errors.required">
+                    First Name Is Required
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-md-4 mb-5">
+                <label class="required form-label">Last Name</label>
+                <input type="text" name="lastName" class="form-control mb-2" placeholder="Last Name"formControlName="lastName"
+                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+              <ng-container *ngIf="submitted && f.lastName.errors">
+                <div class="invalid-feedback" *ngIf="f.lastName.errors.required">
+                    Last Name Is Required
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-md-4 mb-5">
+                <label class="required form-label">Email</label>
+                <input type="text" name="email" class="form-control mb-2" placeholder="Email"formControlName="email"
+                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <ng-container *ngIf="submitted && f.email.errors">
+                <div class="invalid-feedback" *ngIf="f.email.errors.required">
+                   Email Is Required
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-md-4 mb-5">
+                <label class="form-label">Phone Number</label>
+                <input type="text" name="phone" class="form-control mb-2" placeholder="Phone Number"formControlName="phone" />
+            </div>
+
+            <div class="form-check form-check-custom form-check-solid col-md-4">
+                <input class="form-check-input" type="checkbox" name="conditions" formControlName="isActive" id="any_conditions">
+                <label class="form-check-label" for="any_conditions">Any conditions</label>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-end my-10">
+    <a [routerLink]="[customerSer.listPage]" class="btn btn-light me-5">Cancel</a>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+        <span class="indicator-label">Save Changes</span>
+    </button>
+</div></form>

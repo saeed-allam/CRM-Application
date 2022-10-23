@@ -1,0 +1,130 @@
+<h3 class="d-flex justify-content-between mb-10">
+    Order Items
+    <div class="alert alert-warning d-flex align-items-center p-2 mb-0">
+        <span class="svg-icon svg-icon-2hx svg-icon-warning {{fixed.activeLang.dir == 'rtl' ? 'ms-2' :'me-2'}}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path opacity="0.3"
+              d="M20.5543 4.37824L12.1798 2.02473C12.0626 1.99176 11.9376 1.99176 11.8203 2.02473L3.44572 4.37824C3.18118 4.45258 3 4.6807 3 4.93945V13.569C3 14.6914 3.48509 15.8404 4.4417 16.984C5.17231 17.8575 6.18314 18.7345 7.446 19.5909C9.56752 21.0295 11.6566 21.912 11.7445 21.9488C11.8258 21.9829 11.9129 22 12.0001 22C12.0872 22 12.1744 21.983 12.2557 21.9488C12.3435 21.912 14.4326 21.0295 16.5541 19.5909C17.8169 18.7345 18.8277 17.8575 19.5584 16.984C20.515 15.8404 21 14.6914 21 13.569V4.93945C21 4.6807 20.8189 4.45258 20.5543 4.37824Z"
+              fill="black"></path>
+            <path
+              d="M10.5606 11.3042L9.57283 10.3018C9.28174 10.0065 8.80522 10.0065 8.51412 10.3018C8.22897 10.5912 8.22897 11.0559 8.51412 11.3452L10.4182 13.2773C10.8099 13.6747 11.451 13.6747 11.8427 13.2773L15.4859 9.58051C15.771 9.29117 15.771 8.82648 15.4859 8.53714C15.1948 8.24176 14.7183 8.24176 14.4272 8.53714L11.7002 11.3042C11.3869 11.6221 10.874 11.6221 10.5606 11.3042Z"
+              fill="black"></path>
+          </svg>
+        </span>
+        <div class="d-flex">
+          <span class="mx-1 text-warning">Total = ( Price + (Price * Tax Amount %) ) * Quantity</span>
+        </div>
+      </div>
+    <button class="btn btn-light-danger btn-sm" (click)="removeAll()">
+      <i class="fa fa-trash"></i> {{'Common.RemoveAll'|translate}}</button>
+  </h3>
+  <form [formGroup]="orderItemForm" class="mb-10">
+    <div class="row">
+      <div class="col-md-4">
+        <label class="fs-5 fw-bold mb-2">Product</label>
+        <app-product-shared [selectedValue]="f.productId.value"
+         (selectedValueChanges)="f.productId.setValue($event?.productId);f.price.setValue($event.price);
+         f.total.setValue(f.quantity.value*(f.price.value)+f.quantity.value*(f.price.value)*(f.taxAmount.value/100))">
+        </app-product-shared>
+      </div>
+      <div class="col-2">
+        <label class="fs-5 fw-bold mb-2"> Price </label>
+        <input type="number" class="form-control" formControlName="price" name="price" readonly
+          placeholder="Price" />
+      </div>
+      <div class="col-2">
+        <label class="fs-5 fw-bold mb-2"> Quantity</label>
+        <input type="number" class="form-control" formControlName="quantity" name="quantity"
+          placeholder="Quantity"(input)="f.total.setValue(f.quantity.value*(f.price.value)+f.quantity.value*(f.price.value)*(f.taxAmount.value/100))"
+          [ngClass]="{ 'is-invalid': submitted && f.quantity.errors }" />
+        <ng-container *ngIf="submitted && f.quantity.errors">
+          <div class="invalid-feedback" *ngIf="f.quantity.errors.required">
+            Quantity Is Required
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-2">
+        <label class="fs-5 fw-bold mb-2"> Tax Amount</label>
+        <input type="number" class="form-control" formControlName="taxAmount" name="taxAmount"
+          placeholder="Order" [ngClass]="{ 'is-invalid': submitted && f.taxAmount.errors }"
+          (input)="f.total.setValue(f.quantity.value*(f.price.value)+f.quantity.value*(f.price.value)*(f.taxAmount.value/100))" />
+        <ng-container *ngIf="submitted && f.taxAmount.errors">
+          <div class="invalid-feedback" *ngIf="f.taxAmount.errors.required">
+           Tax Amount Is Required
+          </div>
+        </ng-container>
+      </div>      
+    <div class="col-lg-12 col-xl-2 mb-5">
+        <label class="fs-5 fw-bold mb-2">Total</label>
+        <input type="number" class="form-control" formControlName="total" name="total"
+          placeholder="Total" min="0" readonly />
+      </div>
+      <div class="col-2">
+        <label class="fs-5 fw-bold mb-2"> Order</label>
+        <input type="number" class="form-control" formControlName="orderLine" name="orderLine"
+          placeholder="Order" [ngClass]="{ 'is-invalid': submitted && f.orderLine.errors }" />
+        <ng-container *ngIf="submitted && f.orderLine.errors">
+          <div class="invalid-feedback" *ngIf="f.orderLine.errors.required">
+            Order Is Required
+          </div>
+        </ng-container>
+      </div>
+  
+      <div class="col-2 d-flex align-items-center justify-content-center">
+        <button type="button" class="btn btn-light-success btn-sm m-2" (click)="addRecord()">
+          <i class="fa fa-plus"></i>{{'Common.Add'|translate}}</button>
+        <button type="button" class="btn btn-light-primary btn-sm m-2" (click)="initModel()">
+          <i class="fa fa-file-alt"></i>{{'Common.New'|translate}}</button>
+      </div>
+    </div>
+  </form>
+  <div class="row clearfix" *ngIf="orderItem?.length != 0 && orderItem != null">
+    <div class="table-responsive">
+      <table class="table align-middle gs-0 gy-4" style="text-align-last: center;">
+        <thead class="thead-dark">
+          <tr class="fw-bolder text-muted bg-light">
+            <th class="text-end fs-4  ">#</th>
+            <th class="py-5 fs-4  ">Product</th>
+            <th class="py-5 fs-4  ">Price</th>
+            <th class="py-5 fs-4  ">qty</th>
+            <th class="py-5 fs-4  ">Tax Amount</th>
+            <th class="py-5 fs-4  ">Total</th>
+            <th class="py-5 fs-4  ">Tools</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of (orderItem | orderBy: 'orderLine' ); let i = index" class="text-center">
+            <td>{{ i+1 }}</td>
+            <td class="fs-4">
+                {{((productSer.list|filterById :'productId':item.productId)[0]?.name)}}
+            </td>
+            <td class="fs-4">
+              {{item.price}}
+            </td>
+            <td class="fs-4">
+              {{item.quantity}}
+            </td>
+            <td class="fs-4">
+              {{item.taxAmount}}
+            </td>
+            <td class="fs-4">
+              {{item.total}}
+            </td>
+            <td>
+              <a class="btn btn-icon btn-light-danger btn-circle btn-sm m-2" tooltip="{{ 'Common.Delete' | translate }}"
+                (click)="removeItem(item, i)">
+                <i class="fa fa-trash"></i></a>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="col-2 d-flex align-items-center justify-content-between w-100  flex-column"
+    *ngIf="orderItem?.length == 0 || orderItem == null">
+    <img src="assets/image/folders.svg" class="mw-100px mw-lg-150px" />
+    <p class="fw-bolder me-5 my-1">No Order Items</p>
+  </div>
+  
